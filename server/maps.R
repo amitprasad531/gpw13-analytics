@@ -102,13 +102,15 @@ observeEvent(mapping_data(), {
   output$bar_map <- renderPlotly({
     df <- mapping_data()
     df$ISO3 <- factor(df$ISO3, levels = df$ISO3[order(df[[im()]])])
-    index <- match(input$indicator_map, gpw_choices_full)
+    ym <- ym()
+    im <- im()
+    index <- match(im, gpw_choices_full)
     indic <- as.character(gpw_colnames[index])
     g <- ggplot(df, aes_string(x = "ISO3", y = im(), fill = "Region")) +
-      geom_bar(stat = "identity", aes(text=sprintf("Year: %s", Year))) +
+      geom_bar(stat = "identity") +
       scale_fill_manual(values=bar_colors(rm()), 
                         drop = FALSE) +
-      ggtitle(paste0(indic, " by country using ISO3 code (", input$year_map, ")")) +
+      labs(title = paste0(indic, " by country using ISO3 code (", ym(), ")")) +
       theme(plot.title = element_text(family = "Helvetica", size = 12),
             axis.text.y = element_blank(),
             axis.title = element_blank(),
@@ -125,9 +127,11 @@ observeEvent(mapping_data(), {
 
 mapData <- eventReactive(input$create_map, {
   df <- mapping_data()
-  if (rm() != "All") {
-    df[[im()]][df$Region != rm()] <- NA
+  rm <- rm()
+  if (rm != "All") {
+    df <- df %>% filter(Region == rm)
   }
+  df
 }, ignoreNULL = FALSE)
 
 output$downloadMapData <- downloadHandler(

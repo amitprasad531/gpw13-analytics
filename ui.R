@@ -1,8 +1,16 @@
 shinyUI(
   navbarPage(theme=shinytheme("sandstone"),
   "GPW 13 Analytics",
+  tabPanel("Trends",
+           sidebarLayout(
+             sidebarPanel(
+               width=3
+             ),
+             mainPanel(
+               
+             )
+           )),
   tabPanel("Maps",
-    includeCSS("www/styles.css"),
     sidebarLayout(
       sidebarPanel(
         selectInput("indicator_map", "Select Indicator",
@@ -20,7 +28,8 @@ shinyUI(
                     selected = "YlGnBu"),
         sliderInput("quantile_map", "No. of Quantiles for Map",
                     min = 2, max = 6, value = 4, step = 1),
-        downloadButton("downloadMapData", "Download Data"), br(), br(), br(),
+        downloadButton("downloadMapData", "Download Data"), br(), br(),
+        HTML(paste(span("Tip: ", style="font-weight: bold;"), span("Create map first to download corresponding data"))), br(), br(),
         HTML(paste0(
           span("Map disclaimer: ", style="font-weight: bold;"), 
           "The boundaries and names shown and the designations used on this map do not imply the expression of any opinion

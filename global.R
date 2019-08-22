@@ -86,13 +86,13 @@ map_latest <- function(a, b, yr = NA, value = NA) {
 # Selecting appropriate map
 map_type <- function(region, df) {
   switch(region,
-         "All" = leaflet(df) %>% setView(20, 20, zoom = 3) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 2, maxZoom = 5)),
-         "AFRO" = leaflet(df) %>% setView(30, 0, zoom = 4) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 3, maxZoom = 5)),
+         "All" = leaflet(df) %>% setView(20, 20, zoom = 2) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 1, maxZoom = 5)),
+         "AFRO" = leaflet(df) %>% setView(30, 0, zoom = 3) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 2, maxZoom = 5)),
          "EMRO" = leaflet(df) %>% setView(38, 25, zoom = 4) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 3, maxZoom = 5)),
-         "EURO" = leaflet(df) %>% setView(100, 55, zoom = 2) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 2, maxZoom = 5)),
+         "EURO" = leaflet(df) %>% setView(80, 55, zoom = 3) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 2, maxZoom = 5)),
          "PAHO" = leaflet(df) %>% setView(-90, 20, zoom = 2) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 2, maxZoom = 5)),
-         "SEARO" = leaflet(df) %>% setView(120, 20, zoom = 4) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 3, maxZoom = 5)),
-         "WPRO" = leaflet(df) %>% setView(140, 35, zoom = 3) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 3, maxZoom = 5))
+         "SEARO" = leaflet(df) %>% setView(120, 18, zoom = 4) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 3, maxZoom = 5)),
+         "WPRO" = leaflet(df) %>% setView(140, 5, zoom = 3) %>% addProviderTiles("CartoDB.PositronNoLabels", options = providerTileOptions(minZoom = 2, maxZoom = 5))
   )
 }
 
