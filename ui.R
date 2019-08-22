@@ -4,10 +4,31 @@ shinyUI(
   tabPanel("Trends",
            sidebarLayout(
              sidebarPanel(
+               selectizeInput("indicator_trend", "Select Indicator",
+                              choices = gpw_choices_full[!gpw_choices_full %in% c("transfats")],
+                              selected = "ihr",
+                              options = list(placeholder = "Select Indicator")),
+               checkboxGroupInput("region_trend", "Select Regions",
+                                  choices = levels(gpw$Region),
+                                  selected = levels(gpw$Region),
+                                  inline = FALSE), br(),
+               sliderInput("years_trend", "Enter Year Range",
+                           min = 2000, max = 2018,
+                           value = c(2010, 2016),
+                           sep = ""), 
+               selectizeInput("country_trend", "Select Countries",
+                              choices = unique(gpw$Country),
+                              selected = sample(unique(gpw$Country), 10),
+                              multiple = TRUE, 
+                              options = list(placeholder = "Select Countries",
+                                             closeAfterSelect = FALSE)),
+               actionButton("create_trends", "Show Trends"),
                width=3
              ),
              mainPanel(
-               
+               column(12,  
+                      wellPanel(plotlyOutput("trends", height = "60vh", width = "auto"))
+               )
              )
            )),
   tabPanel("Maps",

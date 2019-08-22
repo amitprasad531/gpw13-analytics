@@ -107,3 +107,27 @@ bar_colors <- function(region) {
          "WPRO" = c('AFRO' = '#F0E5E5', 'EMRO'='#F0E5E5', 'EURO'='#F0E5E5', 'PAHO' = '#F0E5E5', 'SEARO' = '#F0E5E5', 'WPRO' = '#fa95eb')
   ) 
 }
+
+fonts <- list(
+  family = "sans-serif",
+  size = 12
+)
+
+legend.Settings <- list(
+  font = fonts
+)
+
+tf <- list(
+  family = "sans-serif",
+  size = 14
+)
+
+txline <- list(
+  family = "sans-serif",
+  size = 10
+)
+
+tyline <- list(
+  family = "sans-serif",
+  size = 10
+)
