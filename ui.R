@@ -2,6 +2,7 @@ shinyUI(
   navbarPage(theme=shinytheme("sandstone"),
   "GPW 13 Analytics",
   tabPanel("Trends",
+           includeCSS("www/styles.css"),
            sidebarLayout(
              sidebarPanel(
                selectizeInput("indicator_trend", "Select Indicator",
@@ -27,7 +28,25 @@ shinyUI(
              ),
              mainPanel(
                column(12,  
-                      wellPanel(plotlyOutput("trends", height = "60vh", width = "auto"))
+                      wellPanel(plotlyOutput("trends", height = "60vh", width = "auto")),
+                      useShinydashboard(),
+                      column(3,
+                             box(title = "Selected countries", 
+                                 status = "info", solidHeader = TRUE,
+                                 width = 10, height = "12vh", textOutput("stat1_trend"))
+                      ),
+                      column(3, 
+                             box(title = "Countries with data", status = "info", solidHeader = TRUE,
+                                 width = 10, height = "12vh", textOutput("stat2_trend"))
+                      ),
+                      column(3, 
+                             box(title = "Minimum value", status = "info", solidHeader = TRUE,
+                                 width = 10, height = "12vh", textOutput("stat3_trend"))
+                      ),
+                      column(3, 
+                             box(title = "Maximum value", status = "info", solidHeader = TRUE,
+                                 width = 10, height = "12vh", textOutput("stat4_trend"))
+                      )
                )
              )
            )),

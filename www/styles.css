@@ -1,10 +1,7 @@
-/* #map_of_indicator{
-  margin-top: -20px;
-  margin-left: -20px;
-  padding: 0;
+#stat1_trend, #stat2_trend,
+#stat3_trend, #stat4_trend{
+  text-align: center;
+  font-size: 2.5em; 
+  font-weight: bold;
+  color: #566573;
 }
-
-#bar_map {
-  margin-left: -20px;
-}
-*/

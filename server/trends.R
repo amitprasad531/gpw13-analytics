@@ -123,3 +123,67 @@ observeEvent(trend_interpol(), {
     }
   })
 }, ignoreNULL = FALSE)
+
+countries_selected <- reactive({
+  c <- ct()
+  r <- rt()
+  df <- gpw %>% filter(Region %in% r) %>% select(Country, ISO3)
+  if ("All" %in% c) {
+    count <- length(unique(df$ISO3))
+  } else {
+    temp <- df %>% filter(Country %in% c)
+    count <- length(unique(temp[["ISO3"]]))
+  }
+})
+
+output$stat1_trend <- renderText({
+  if (is.na(countries_selected())) {
+    "NA"
+  } else {
+    as.integer(countries_selected())
+  }
+})
+
+countries_with_data <- reactive({
+  if (dim(trend_interpol())[1] == 0) {
+    count <- 0
+  } else {
+    count <- length(unique(trend_interpol()$ISO3))
+  }
+})
+
+output$stat2_trend <- renderText({
+  countries_with_data()
+})
+
+minimum_trend <- reactive({
+  if (dim(trend_interpol())[1] == 0) {
+    minimum <- NA_character_
+  } else {
+    minimum <- min(trend_interpol()[[it()]], na.rm = TRUE)
+  }
+})
+
+output$stat3_trend <- renderText({
+  if (is.na(minimum_trend())) {
+    "NA"
+  } else {
+    round(minimum_trend(), 2)
+  }
+})
+
+maximum_trend <- reactive({
+  if (dim(trend_interpol())[1] == 0) {
+    maximum <- NA_character_
+  } else {
+    maximum <- max(trend_interpol()[[it()]], na.rm = TRUE)
+  }
+})
+
+output$stat4_trend <- renderText({
+  if (is.na(maximum_trend())) {
+    "NA"
+  } else {
+    round(maximum_trend(), 2)
+  }
+})
