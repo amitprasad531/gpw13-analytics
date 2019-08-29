@@ -49,17 +49,17 @@ observeEvent(corr_data(), {
     label_index_y <- match(input$yvar_corr, gpw_ind)
     y_label <- str_wrap(ind_label(label_index_y), width = 80)
     if (all(is.na(corr_data()$xvar)) | all(is.na(corr_data()$yvar))) {
-      df <- data.frame(year = c(2000:2018), y = c(1:28))
+      df <- data.frame(year = c(2000:2018), y = c(1:19))
       x <- ggplot(df, aes(x = year, y = y)) +
         geom_abline(intercept = 0, slope = 1, linetype=3, col="black") +
         labs(x = ind_label(label_index_x), y = y_label,  title = "Data for at least one indicator is not available.") +
         theme(rect = element_rect(fill = "transparent"),
               plot.background = element_rect(fill = "transparent", color = NA),
               text = element_text(family = "Arial"),
-              axis.title = element_text(size = 14),
-              axis.text = element_text(size = 13),
+              axis.title = element_text(size = 11),
+              axis.text = element_text(size = 10),
               plot.margin=unit(c(0,0,0,1.2),"cm"),
-              title = element_text(size = 16))
+              title = element_text(size = 12))
       ggplotly(x)
     } else {
       med_x <- median(corr_data()$xvar, na.rm = TRUE)
@@ -73,19 +73,73 @@ observeEvent(corr_data(), {
              y = paste(y_label, " (", input$yyear_corr, ")", sep="")) +
         geom_hline(yintercept = med_y, linetype = 3, size = 0.5) +
         geom_vline(xintercept = med_x, linetype = 3, size = 0.5) +
-        annotate("text", x = med_x, y = min_y, label = "X-axis median", size=5) +
-        annotate("text", x = min_x, y = med_y+0.02*med_y, label = "Y-axis median", size=5) +
+        annotate("text", x = med_x, y = min_y, label = "X-axis median", size=3) +
+        annotate("text", x = min_x, y = med_y+0.02*med_y, label = "Y-axis median", size=3) +
+        ggtitle("Correlations") +
         scale_fill_manual(values=c('AFRO' = '#fda09a', 'EMRO'='#cdbc64', 'EURO'='#36c14c', 
                                    'PAHO' = '#00bfc3', 'SEARO' = '#92baff', 'WPRO' = '#fa95eb')) +
         theme(plot.background = element_rect(fill = "transparent", color = NA),
               panel.background = element_rect(fill = "white"),
               panel.grid.major = element_line(color = "lightgrey"),
               text = element_text(family = "Arial"),
-              axis.title = element_text(size = 12),
+              axis.title = element_text(size = 11),
               plot.margin=unit(c(0,0,0,1.2),"cm"),
               axis.text = element_text(size = 10))
-      ggplotly(g, tooltip="text") %>% layout(showlegend = TRUE, legend = list(font = list(size = 10)))
+      ggplotly(g, tooltip="text") %>% 
+        layout(showlegend = TRUE, legend = list(font = list(size = 10), bgcolor="transparent", bordercolor="transparent")) 
     }
   })
 }, ignoreNULL = FALSE)
 
+# Pearson coefficient
+pearson <- reactive({
+  if (sum(!is.na(corr_data()$xvar)) < 3 | sum(!is.na(corr_data()$yvar)) < 3) {
+    corr <- NA_character_
+  } else {
+    corr <- cor.test(corr_data()$xvar, corr_data()$yvar, method="pearson")
+  }
+})
+
+output$stat1_corr <- renderText({
+  if (is.na(pearson()[1])) {
+    "NA"
+  } else {
+    round(pearson()$estimate, 3)
+  }
+})
+output$stat2_corr <- renderText({
+  if (is.na(pearson()[1])) {
+    "NA"
+  } else {
+    round(pearson()$p.value, 3)
+  }
+})
+
+# Spearman coefficient
+spearman <- reactive({
+  if (sum(!is.na(corr_data()$xvar)) < 3 | sum(!is.na(corr_data()$yvar)) < 3) {
+    corr <- NA_character_
+  } else {
+    corr <- cor.test(corr_data()$xvar, corr_data()$yvar, method="spearman")
+  }
+})
+
+output$stat3_corr <- renderText({
+  if (is.na(spearman()[1])) {
+    "NA"
+  } else {
+    round(spearman()$estimate, 3)
+  }
+})
+output$stat4_corr <- renderText({
+  if (is.na(spearman()[1])) {
+    "NA"
+  } else {
+    round(spearman()$p.value, 3)
+  }
+})
+
+
+###
+### Scatter Plot End
+###

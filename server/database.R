@@ -12,7 +12,10 @@ observe({
 
 dataTable <- reactive({
   if (input$latest == TRUE) {
-    req(input$country_data, input$indicators_data)
+    if ((is.null(input$country_data)) | (is.null(input$indicators_data))) {
+      temp_data() %>%
+        select(Country, Region, Year)
+    } else {
     df <- temp_data() %>% 
       select(Country, Year, Region, input$indicators_data) %>%
       filter(Country %in% input$country_data)
@@ -34,6 +37,7 @@ dataTable <- reactive({
     }
     num_rows <- nrow(temp)
     df <- temp[2:num_rows,]
+    }
   } else {
     temp_data() %>%
       filter(Country %in% input$country_data) %>%

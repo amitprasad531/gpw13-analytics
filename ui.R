@@ -2,6 +2,7 @@ shinyUI(
   navbarPage(theme=shinytheme("flatly"),
   "GPW 13 Analytics",
   tabPanel("Correlations",
+           includeCSS("www/styles.css"),
            sidebarLayout(
              sidebarPanel(
                selectizeInput("xvar_corr", "Select X-axis Indicator",
@@ -27,15 +28,35 @@ shinyUI(
                               selected = "All",
                               multiple = TRUE,
                               options = list(placeholder = "Select Countries")),
-               actionButton("create_corr", "Show Correlation"),
+               actionButton("create_corr", "Show Correlation"), br(), br(),
+               HTML(paste(span("Tip: ", style="font-weight: bold;"), span("Use Show Correlation button only if you change regions or countries"))),
                width = 3
              ),
              mainPanel(
-               wellPanel(plotlyOutput("correlations", height = "60vh"))
+               column(12,
+               wellPanel(plotlyOutput("correlations", height = "60vh")),
+               useShinydashboard(),
+               column(3,
+                      box(title = "Pearson Coefficient", 
+                          status = "info", solidHeader = TRUE,
+                          width = 10, height = "12vh", textOutput("stat1_corr"))
+               ),
+               column(3, 
+                      box(title = "Pearson P-value", status = "info", solidHeader = TRUE,
+                          width = 10, height = "12vh", textOutput("stat2_corr"))
+               ),
+               column(3, 
+                      box(title = "Spearman Coefficient", status = "info", solidHeader = TRUE,
+                          width = 10, height = "12vh", textOutput("stat3_corr"))
+               ),
+               column(3, 
+                      box(title = "Spearman P-value", status = "info", solidHeader = TRUE,
+                          width = 10, height = "12vh", textOutput("stat4_corr"))
+               )
+               )
              )
            )),
   tabPanel("Trends",
-           includeCSS("www/styles.css"),
            sidebarLayout(
              sidebarPanel(
                selectizeInput("indicator_trend", "Select Indicator",
